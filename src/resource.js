@@ -1,5 +1,9 @@
 var res = {
-    HelloWorld_png : "res/HelloWorld.png",
+    HelloWorld_png : 'res/HelloWorld.png',
+    smallMap: 'res/smallmap.tmx',
+    mountain_landscape: 'res/mountain_landscape.png',
+    mountain_landscape2: 'res/res/mountain_landscape.png',
+    jane: 'res/jane.png',
 };
 
 var g_resources = [];

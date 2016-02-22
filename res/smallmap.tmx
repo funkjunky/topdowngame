@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="mountain_landscape" tilewidth="32" tileheight="32">
+  <image source="res/mountain_landscape.png" width="512" height="512"/>
+ </tileset>
+ <layer name="grass" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxbxsDAsIyKeAeRmJp2jto7au+ovaP2jto7au+ovaP2DiZ7ARHtkzA=
+  </data>
+ </layer>
+ <layer name="scenery" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBh6YAWNzF1JgD8cAK3CbhQgwAwoHqz2rmQYnmkbGYymc+oDUsKUHukf2Y7hnp5HwdAEAKowCX4=
+  </data>
+ </layer>
+ <layer name="obstructions" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowAVnALi0wNg7y0gvj0A9r4C4tcDYO8vIP49APaOglEwCkbBKKA9AABewgcV
+  </data>
+ </layer>
+ <objectgroup name="obstructions">
+  <object x="416" y="192" width="64" height="64"/>
+ </objectgroup>
+</map>

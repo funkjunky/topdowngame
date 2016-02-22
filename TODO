@@ -1,18 +1,15 @@
 TODO Isogame
 —
 
- - create a new game called “topdowngame”
-	- create it
-	- compile it for web
-	- compile it for ios IPAD
+ *- figure out clicking
+	*- find a way to click on the map and move the character
+ *- figure out tapping for mobile
+	*- first read if there is a cocos way to grab both in the same way
+	*- if not, then make my own.
 
- - using my knowledge from Jane’s game, get a map working
-	- create a blanket map that’s just a bucket of grass alrge enough to cover ipad.
-	- import it into the game and render it
-	- render Jane’s sprite
+ - fix crashing on touch event for ios…
 
- - figure out clicking
-	- find a way to click on the map and move the character
- - figure out tapping for mobile
-	- first read if there is a cocos way to grab both in the same way
-	- if not, then make my own.
+ - figure out how to test on a different simulator device, preferably ipad mini
+
+
+ - Figure out how I’m going to package my top down game?? i dunno…

@@ -12,6 +12,39 @@ var HelloWorldLayer = cc.Layer.extend({
         // ask the window size
         var size = cc.winSize;
 
+        var map = new cc.TMXTiledMap(res.smallMap);
+        this.addChild(map);
+
+        var character = new cc.Sprite(res.jane);
+        character.attr({
+            x: size.width / 2,
+            y: size.height / 2
+        });
+        this.addChild(character);
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
+            onTouchBegan: function(touch, event) {
+                character.x += 10;
+                //Crashes here on ios
+            },
+            onTouchMoved: function(touch, event) {
+            },
+            onTouchEnded: function(touch, event) {
+            },
+        }, this);
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.MOUSE,
+            swallowTouches: true,
+            onMouseDown: function(touch, event) {
+                character.x += 10;
+                console.log('mouseDown location: ', touch.getLocation());
+            },
+        }, this);
+
+        /*
         /////////////////////////////
         // 3. add your codes below...
         // add a label shows "Hello World"
@@ -30,6 +63,7 @@ var HelloWorldLayer = cc.Layer.extend({
             y: size.height / 2
         });
         this.addChild(this.sprite, 0);
+        */
 
         return true;
     }
