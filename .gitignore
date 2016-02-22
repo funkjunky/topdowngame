@@ -1,0 +1,7 @@
+*.swp
+frameworks/
+simulator/
+.cocos-project.json
+CMakeLists.txt
+index.html
+main.js
