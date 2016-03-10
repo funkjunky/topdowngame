@@ -1,4 +1,3 @@
-
 var HelloWorldLayer = cc.Layer.extend({
     sprite:null,
     ctor:function () {
@@ -15,32 +14,47 @@ var HelloWorldLayer = cc.Layer.extend({
         var map = new cc.TMXTiledMap(res.smallMap);
         this.addChild(map);
 
+        var gameMap = new GameMap(map);
+
         var character = new cc.Sprite(res.jane);
-        character.attr({
+        character.setName('player');
+        character.attr(gameMap.getScreenTileCoords({
             x: size.width / 2,
-            y: size.height / 2
-        });
+            y: size.height / 2,
+        }));
+        character.setAnchorPoint(0,0);
         this.addChild(character);
 
+        var cursor = new cc.Sprite(res.cursor);
+        cursor.setOpacity(75);
+        cursor.attr({
+            x: -32,
+            y: -32,
+        });
+        cursor.setAnchorPoint(0,0);
+        this.addChild(cursor);
+        cursor.runAction(cc.repeatForever(cc.sequence(cc.delayTime(0.5), cc.TintTo.create(0.3, 255, 128, 128), cc.TintTo.create(0.3, 255,255,255))));
+
         cc.eventManager.addListener({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            swallowTouches: true,
-            onTouchBegan: function(touch, event) {
-                character.x += 10;
-                //Crashes here on ios
-            },
-            onTouchMoved: function(touch, event) {
-            },
-            onTouchEnded: function(touch, event) {
+            event: cc.EventListener.TOUCH_ALL_AT_ONCE,
+            onTouchesBegan: function(touches, event) {
+                //end(event.getCurrentTarget()._children) represents the top node, or the player in some cases.
+                console.log('click, relevant to player character space?', character.convertToNodeSpace(touches[0].getLocation()));
+                console.log('mouseDown location: ', touches[0].getLocation());
+
+                gameMap.move(character, touches[0].getLocation(), 0.1); //speed is seconds per tile
             },
         }, this);
 
+        //TODO: wrap this
         cc.eventManager.addListener({
             event: cc.EventListener.MOUSE,
             swallowTouches: true,
-            onMouseDown: function(touch, event) {
-                character.x += 10;
-                console.log('mouseDown location: ', touch.getLocation());
+            //Note: unique to web
+            onMouseMove: function(event) {
+                screenLoc = event.getLocation();
+                //console.log('coords: ', gameMap.getCoords(screenLoc), gameMap.getScreenTileCoords(screenLoc));
+                cursor.setPosition(gameMap.getScreenTileCoords(screenLoc));
             },
         }, this);
 

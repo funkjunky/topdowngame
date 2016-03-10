@@ -4,6 +4,7 @@ var res = {
     mountain_landscape: 'res/mountain_landscape.png',
     mountain_landscape2: 'res/res/mountain_landscape.png',
     jane: 'res/jane.png',
+    cursor: 'res/cursor.png',
 };
 
 var g_resources = [];

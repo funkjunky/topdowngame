@@ -7,9 +7,74 @@ TODO Isogame
 	*- first read if there is a cocos way to grab both in the same way
 	*- if not, then make my own.
 
- - fix crashing on touch event for ios…
+ *- figure out selecting a character
+	*- yes, but do I even want to use getCurrentTarget()? Or just use globals?
 
- - figure out how to test on a different simulator device, preferably ipad mini
+ *- Make a GameMap class
+	*- takes the tiled map
+	*- has a function move(char, location), moves character to location
+		*- onClick, call move
+		*- move tweens character to location
+	*- add getCoords that returns the grid(x,y)
+		*- return x,y, width, and height of the tile we are querying for
+	*- add mouseMove event that uses getcoords to move a green square that highlights the tile we are hovering over.
+	*- make function findPath(start, end) that returns an array of sequential locations to tween to to get to destination.
+	*- move should call findPath to get the sequential actions to be taken
+	*- fix location highlighting… it seems to move the character to the wrong location?
+	*- fix speed.
 
+ *- further testing Astar
+	*- extend map with more objects
+	*- it’s inconsistent and sometimes goes through objects. 
 
- - Figure out how I’m going to package my top down game?? i dunno…
+ - make an enemy character
+	- shows up top left corner
+	- use a rat sprite
+
+ - be able to click on a character
+	- capture clicking on the enemy sprite (console.log)
+	- don’t process the map click. Cancel bubbling or something somehow.
+	- set engaged for the character to true.
+
+ - make a cocos2D npm package if one doesn’t already exist! We’ll use that instead of cocos new whatever.
+ - package more things!! Things are getting to messy.
+
+ - battle
+	- create a class for character
+		- has range(), windup(), reload(), damage(), health(), type [enemy, player]
+	- If a character is “engaged” with another character and that character is in “range” attack it
+		- give player character the “player” type and the enemy “monster” type
+		- ensure the player attacks the monster whenn in range.
+		- ensure the monster gets “engaged” when attacked and starts attacking.
+
+ - add battle text!
+	- show numbers above the character that took damage. Red for player, black for other.
+	- It should “jump” at a random angle between 20 degrees  left or right from up. With a force, then fall naturally fast and fade quickly after the up swing.
+
+ - respawn the enemy when it dies
+
+ - add in the RO sprite for swordsman for attacking
+	- figure out how to use spritesheets properly [use mounted peco peco if it isn’t too challenging, just cause it’s fun]
+	- get the walking animation working
+	- play the attacking animation over the duration of windup
+	- play the hurt animation when the enemy attacks
+
+ - Add some stats to the game that are used to calculate range(), windup(), etc.
+	~max stat would be 99.
+	- i have to think about this but something like RO
+	- strength: dmg multiplier [damage <= str * wpnpower]
+	- agility: [windup <= 1 - (agility / 100)]
+	- dexterity: [reload <= (100 / dexterity + 100) - (dexterity / 250)]
+	- health: [health <= 100 + [vitality * 10] + [2 ^ round(vitality / 8)]
+
+ - create a new scene for upgrading stats
+	- add a button to press on the screen that brings up this new scene
+	- add a god variable that allows the stats to be changed at will
+	- add UI for the 4 stats. They should be big enough that 6 of them would take up the whole screen. Each having an up and down arrow.
+	- I should show the range(), windup(), etc. on this screen as well and it should update as the stats get changed.
+	- also show an exp stat and a level stat.
+
+ - add exp and levels
+	- when a monster is killed the player gets exp
+	- when exp > (level * 10 + 2 ^ round(level / 5)) ++level [give 4 + (level/10) points] and reset exp
+	- every 10 points into a stat increases the cost by 1.

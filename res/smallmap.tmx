@@ -15,10 +15,19 @@
  </layer>
  <layer name="obstructions" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFowAVnALi0wNg7y0gvj0A9r4C4tcDYO8vIP49APaOglEwCkbBKKA9AABewgcV
+   eJxjYKAO+EuiOLXAXyQaF6a1vfjkaW0vuj+pYe8pID5NhL3YaErALSC+PQD2vgLi10Taiy5PCfgFxL+JsJce6XkUjIJRMApGAXUBAO7bLp0=
   </data>
  </layer>
  <objectgroup name="obstructions">
   <object x="416" y="192" width="64" height="64"/>
+  <object x="576" y="0" width="32" height="256"/>
+  <object x="640" y="32" width="32" height="224"/>
+  <object x="672" y="32" width="192" height="32"/>
+  <object x="832" y="64" width="32" height="192"/>
+  <object x="704" y="224" width="128" height="32"/>
+  <object x="704" y="96" width="32" height="128"/>
+  <object x="736" y="96" width="64" height="32"/>
+  <object x="768" y="128" width="32" height="64"/>
+  <object x="768" y="0" width="32" height="32"/>
  </objectgroup>
 </map>

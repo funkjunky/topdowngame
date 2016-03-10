@@ -12,6 +12,8 @@
     "modules" : ["cocos2d"],
 
     "jsList" : [
+        "src/game-map.js",
+        "src/math-helper.js",
         "src/resource.js",
         "src/app.js"
     ]
