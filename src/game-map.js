@@ -1,8 +1,5 @@
-//TODO: change to function GameMap(
-var _debugGameMap;
-var GameMap = function(tiledMap) {
+function GameMap(tiledMap) {
     this.tiledMap = tiledMap;
-    _debugGameMap = this;
     console.log('created a new GameMap', this.tiledMap);
 };
 
@@ -17,7 +14,6 @@ GameMap.prototype.move = function(character, loc, speed) {
     var last = path.splice(0,1)[0];   //remove the starting point from the path.
     var moves = path.map(function(point, index) {
         var duration = speed * dist(point, last);
-        console.log('duration: ', duration);
         last = path[index];
         return cc.MoveTo.create(duration, this.adjustedScreenCoords(point));
     }.bind(this));
@@ -68,8 +64,7 @@ GameMap.prototype.getScreenTileCoords = function(screenLoc) {
 GameMap.prototype.getPath = function(mapLocA, mapLocB) {
     console.log('pathing: ', mapLocA, mapLocB);
     var AStar = this.getAStar(mapLocA, mapLocB);
-    console.log('astar: ', AStar);
-    return AStar;//this.collapsePath(AStar);
+    return AStar;
 };
 
 //Takes an array of locations and removes all non-obstructed nodes, to minimize the number of moves [I don't want to move roboticall up and down]
