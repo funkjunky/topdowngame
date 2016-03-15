@@ -35,7 +35,8 @@ TODO Isogame
 	*- capture clicking on the enemy sprite (console.log)
 
  - package things
-	-
+	*- ensure mathhelper and gamemap are simple and packaged into libraries
+	- breakdown app so it’s simpler…
 
  - battle
 	- create a class for character

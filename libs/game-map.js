@@ -1,5 +1,6 @@
-function GameMap(tiledMap) {
+function GameMap(tiledMap, blockedTag) {
     this.tiledMap = tiledMap;
+    this.blockedTag = blockedTag;
     console.log('created a new GameMap', this.tiledMap);
 };
 
@@ -7,7 +8,7 @@ GameMap.prototype.move = function(character, loc, speed) {
     if(character.aMoveAction && !character.aMoveAction.isDone())
         character.stopAction(character.aMoveAction);
     //Below is hyper basic, move sprite to location.
-    var path = this.getPath(this.getCoords(character), this.getCoords(loc));
+    var path = this.getAStar(this.getCoords(character), this.getCoords(loc));
     console.log('path: ', path);
     if(!path.length)
         return;
@@ -43,6 +44,7 @@ GameMap.prototype.adjustedScreenCoords = function(mapLoc) {
     };
 };
 
+//Note: this only gets the inside rect of the tile. This is to avoid constant collisions. It makes the math easier, etc as well.
 GameMap.prototype.getRectFromMapLoc = function(mapLoc) {
     return {
         x: (mapLoc.x * this.tiledMap.tileWidth) + 1,
@@ -60,30 +62,10 @@ GameMap.prototype.getScreenTileCoords = function(screenLoc) {
     };
 };
 
-//returns an array of locations to move to, in order to path from locA to locB
-GameMap.prototype.getPath = function(mapLocA, mapLocB) {
-    console.log('pathing: ', mapLocA, mapLocB);
-    var AStar = this.getAStar(mapLocA, mapLocB);
-    return AStar;
-};
-
-//Takes an array of locations and removes all non-obstructed nodes, to minimize the number of moves [I don't want to move roboticall up and down]
-GameMap.prototype.collapsePath = function(path) {
-    var current = 0;
-    var path = path.slice(0);
-    //i < " - 1, because we need to keep the end.
-    for(var i = 1; i < path.length - 1; ++i)
-        if(this.isObstructed(path[current], path[i]))
-            current = i;
-        else
-            path.splice(i--, 1);
-
-    return path;
-};
-
 //g --- calculated distance from start
 //h --- calculated estimated length of path
 GameMap.prototype.getAStar = function(mapLocBegin, mapLocEnd) {
+    console.log('pathing: ', mapLocBegin, mapLocEnd);
     //TODO: use a clone function
     mapLocBegin = {
         x: mapLocBegin.x,
@@ -103,19 +85,15 @@ GameMap.prototype.getAStar = function(mapLocBegin, mapLocEnd) {
         if(++count > maxCount) {
             console.error('AStar went over 200, too complicated of a path'); break;
         }
-        //console.log('openList: ', openList.slice(0));
-        //console.log('closedList: ', closedList.slice(0));
         //grab cheapest estimated node to process next
         var currentIndex = 0;
         for(var i = 1; i < openList.length; ++i)
-            //if(dist(openList[i], mapLocEnd) + dist(openList[i], mapLocBegin) < dist(openList[currentIndex], mapLocEnd) + dist(openList[i])
             if(openList[i].f < openList[currentIndex].f)
                 currentIndex = i;
         var currentNode = openList[currentIndex];
 
         //end case -> result has been found
         if(pointsEqual(currentNode, mapLocEnd)) {
-            console.log('found the end.');
             var curr = currentNode;
             var ret = [];
             while(curr) {
@@ -179,15 +157,6 @@ GameMap.prototype.getNeighbors = function(point, closedList) {
     }.bind(this));
 }
 
-GameMap.prototype.isObstructed = function(mapLocA, mapLocB) {
-    var obstructions = this.tiledMap.getObjectGroup('obstructions').getObjects();
-    for(var i=0; i!=obstructions.length; ++i)
-        if(MathHelper.isLineIntersectingRectangle({p1: this.screenCoords(mapLocA), p2: this.screenCoords(mapLocB)}, obstructions[i]))
-            return true;
-
-    return false;
-};
-
 //TODO: Code specific to cocos2D and Tiled. it'd be nice if I could plug this into my AStar toolkit
 GameMap.prototype.isBlocked = function(mapLoc) {
     //off the map.
@@ -197,7 +166,7 @@ GameMap.prototype.isBlocked = function(mapLoc) {
     for(var k=0; k!=this.tiledMap.objectGroups.length; ++k) {
         var objGroup = this.tiledMap.objectGroups[k];
         //TODO: I should use properties instead of the groupName. So it's more generic and i can have multiple object layers blocking. Or maybe doing other things as well.
-        if(objGroup.groupName == 'obstructions')
+        if(objGroup.groupName == this.blockedTag)
             for(var i=0; i!=objGroup._objects.length; ++i)
                 if(MathHelper.areRectsIntersecting(this.getRectFromMapLoc(mapLoc), objGroup._objects[i]))
                     return true;
