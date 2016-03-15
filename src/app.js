@@ -1,5 +1,5 @@
 var HelloWorldLayer = cc.Layer.extend({
-    sprite:null,
+    myInteractives: [],
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -25,6 +25,19 @@ var HelloWorldLayer = cc.Layer.extend({
         character.setAnchorPoint(0,0);
         this.addChild(character);
 
+        var enemy = new cc.Sprite(res.mouse);
+        enemy.setName('mouse');
+        enemy.attr(gameMap.adjustedScreenCoords({
+            x: 1,
+            y: 17,
+        }));
+        enemy.setAnchorPoint(0,0);
+        this.addChild(enemy);
+        this.addInteractive(enemy, function() {
+            var randomLocation = {x: Math.random() * size.width, y: Math.random() * size.height};
+            gameMap.move(enemy, randomLocation, 0.05); //speed is seconds per tile
+        });
+
         var cursor = new cc.Sprite(res.cursor);
         cursor.setOpacity(75);
         cursor.attr({
@@ -38,13 +51,23 @@ var HelloWorldLayer = cc.Layer.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ALL_AT_ONCE,
             onTouchesBegan: function(touches, event) {
-                //end(event.getCurrentTarget()._children) represents the top node, or the player in some cases.
-                console.log('click, relevant to player character space?', character.convertToNodeSpace(touches[0].getLocation()));
-                console.log('mouseDown location: ', touches[0].getLocation());
+                //console.log('mouseDown location: ', touches[0].getLocation());
+                //iterate through all object interaction events.
+                for(var i=0; i!=this.myInteractives.length; ++i)
+                    this.myInteractives[i](touches[0].getLocation());
 
                 gameMap.move(character, touches[0].getLocation(), 0.1); //speed is seconds per tile
-            },
+            }.bind(this),
         }, this);
+
+/*  //another way to do it? This just sends "enemy" as this to the events... nothing special.
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ALL_AT_ONCE,
+            onTouchesBegan: function(touches, event) {
+                console.log('enem touched?', this);
+            },
+        }, enemy);
+        */
 
         //TODO: wrap this
         cc.eventManager.addListener({
@@ -80,7 +103,13 @@ var HelloWorldLayer = cc.Layer.extend({
         */
 
         return true;
-    }
+    },
+    addInteractive: function(sprite, cb) {
+        this.myInteractives.push(function(point) {
+            if(MathHelper.isPointInsideRect(point, sprite))
+                cb(sprite, point);
+        });
+    },
 });
 
 var HelloWorldScene = cc.Scene.extend({

@@ -13,7 +13,7 @@
 
     "jsList" : [
         "src/game-map.js",
-        "src/math-helper.js",
+        "libs/math-helper.js",
         "src/resource.js",
         "src/app.js"
     ]

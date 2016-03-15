@@ -27,17 +27,15 @@ TODO Isogame
 	*- extend map with more objects
 	*- it’s inconsistent and sometimes goes through objects. 
 
- - make an enemy character
-	- shows up top left corner
-	- use a rat sprite
+ *- make an enemy character
+	*- shows up top left corner
+	*- use a rat sprite
 
- - be able to click on a character
-	- capture clicking on the enemy sprite (console.log)
-	- don’t process the map click. Cancel bubbling or something somehow.
-	- set engaged for the character to true.
+ *- be able to click on a character
+	*- capture clicking on the enemy sprite (console.log)
 
- - make a cocos2D npm package if one doesn’t already exist! We’ll use that instead of cocos new whatever.
- - package more things!! Things are getting to messy.
+ - package things
+	-
 
  - battle
 	- create a class for character

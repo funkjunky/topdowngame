@@ -69,7 +69,7 @@ GameMap.prototype.getPath = function(mapLocA, mapLocB) {
     console.log('pathing: ', mapLocA, mapLocB);
     var AStar = this.getAStar(mapLocA, mapLocB);
     console.log('astar: ', AStar);
-    return this.collapsePath(AStar);
+    return AStar;//this.collapsePath(AStar);
 };
 
 //Takes an array of locations and removes all non-obstructed nodes, to minimize the number of moves [I don't want to move roboticall up and down]
@@ -103,7 +103,7 @@ GameMap.prototype.getAStar = function(mapLocBegin, mapLocEnd) {
     var openList = [mapLocBegin];
 
     var count = 0;
-    var maxCount = 200
+    var maxCount = 300
     while(openList.length > 0) {
         if(++count > maxCount) {
             console.error('AStar went over 200, too complicated of a path'); break;
@@ -136,11 +136,13 @@ GameMap.prototype.getAStar = function(mapLocBegin, mapLocEnd) {
         var neighbors = this.getNeighbors(currentNode, closedList);
         
         for(var i = 0; i < neighbors.length; ++i) {
-            var shortestDistance = currentNode.g + 1;   //1 is one more space
+            //this may be a source of slow down... calculating sqrt often.
+            var distanceFromNeighbor = dist(currentNode, neighbors[i]);
+            var shortestDistance = currentNode.g + distanceFromNeighbor;   //1 is one more space
             var gScoreIsBest = false;
 
             //calculate distance from start
-            neighbors[i].g = currentNode.g + 1;
+            neighbors[i].g = currentNode.g + distanceFromNeighbor;
             //calculate estimated length of path
             neighbors[i].f = neighbors[i].g + dist(neighbors[i], mapLocEnd);
             //set parent
@@ -202,17 +204,17 @@ GameMap.prototype.isBlocked = function(mapLoc) {
         //TODO: I should use properties instead of the groupName. So it's more generic and i can have multiple object layers blocking. Or maybe doing other things as well.
         if(objGroup.groupName == 'obstructions')
             for(var i=0; i!=objGroup._objects.length; ++i)
-                if(MathHelper.areRectsIntersecting(this.getRectFromMapLoc(mapLoc), objGroup._objects[i])) {
-                    console.log('object in way: ', mapLoc);
+                if(MathHelper.areRectsIntersecting(this.getRectFromMapLoc(mapLoc), objGroup._objects[i]))
                     return true;
-                }
     }
 
     return false;
 };
 
 function dist(p1, p2) {
-    return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+    var dx = p1.x - p2.x;
+    var dy = p1.y - p2.y;
+    return Math.sqrt(dx * dx + dy * dy);
 }
 
 function pointsEqual(a, b) {
