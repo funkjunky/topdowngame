@@ -4,6 +4,7 @@ function GameMap(tiledMap, blockedTag) {
     console.log('created a new GameMap', this.tiledMap);
 };
 
+//TODO: I think this should be in TopDownLayer instead...
 GameMap.prototype.move = function(character, loc, speed) {
     if(character.aMoveAction && !character.aMoveAction.isDone())
         character.stopAction(character.aMoveAction);

@@ -15,10 +15,16 @@ var HelloWorldLayer = InteractiveTopDownLayer.extend({
         });
 
         character.onTagEnter('mouse', 128, function(mouse, distance) {
-            console.log('char close to mouse: ', distance, mouse);
+            BubbleText.quickPrint('Hello!', character, {panOffset: {x: 0, y: 64}});
         });
         character.onTagExit('mouse', 128, function(mouse, distance) {
-            console.log('char left mouse: ', distance, mouse);
+            BubbleText.quickPrint('bye bye!', character, {panOffset: {x: 0, y: 64}});
+        });
+        enemy.onTagEnter('student', 128, function(character, distance) {
+            BubbleText.quickPrint('Squeak~!!', enemy, {panOffset: {x: 0, y: 64}});
+        });
+        enemy.onTagExit('student', 128, function(character, distance) {
+            BubbleText.quickPrint('squeak...', enemy, {panOffset: {x: 0, y: 64}});
         });
 
         enemy.onSelect(function() {

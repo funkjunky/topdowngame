@@ -51,11 +51,22 @@ TODO Isogame
 	*- test: console log on fence.
 	*- I need to add the event to interactivesInRange, so I use it’s cb when removeChild is called. Also to make Exit simpler.
 
-	- multiple events per tag, per enter, per exit, all different range… HOW TO SOLVE
+	*- multiple events per tag, per enter, per exit, all different range…
 
- - add fading text function to top down layer, that handles everything including removal of itsself.
-	- create it
-	- create text for onEnter and onExit with rat and character
+ *- add fading text function to top down layer, that handles everything including removal of itsself.
+	*- create it
+	*- create text for onEnter and onExit with rat and character
+	*- text should be able to follow a node…
+
+ - create a debug that gives all the touches information on screen so I can get an idea of how touches work. [if it crashes, then just disable touches for now]
+
+ - test on ipad, by plugging in my ipad and compiling and using on xcode.
+
+ - update touch code
+	- I need to make a class that handles touches
+	- all “types” of touches need to be given a priority (generic click lowest, spriteSelect next, then like touch hold touch next, etc.)
+	- highest priority activates, and all other events aren’t activated.
+	- create more gestures that interpret touches and call a callback with more sane parameters. ie. holdTouch(holdPos, touchPos)
 
  - battle
 	- create a class for character
