@@ -12,9 +12,12 @@
     "modules" : ["cocos2d"],
 
     "jsList" : [
+        "libs/bubble-text.js",
         "libs/game-map.js",
         "libs/math-helper.js",
         "libs/top-down-layer.js",
+        "libs/interactive-top-down-layer.js",
+        "libs/interactive.js",
         "src/resource.js",
         "src/app.js"
     ]

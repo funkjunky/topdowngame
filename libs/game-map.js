@@ -4,6 +4,7 @@ function GameMap(tiledMap, blockedTag) {
     console.log('created a new GameMap', this.tiledMap);
 };
 
+//TODO: I think this should be in TopDownLayer instead...
 GameMap.prototype.move = function(character, loc, speed) {
     if(character.aMoveAction && !character.aMoveAction.isDone())
         character.stopAction(character.aMoveAction);
@@ -11,16 +12,17 @@ GameMap.prototype.move = function(character, loc, speed) {
     var path = this.getAStar(this.getCoords(character), this.getCoords(loc));
     console.log('path: ', path);
     if(!path.length)
-        return;
+        return false;
     var last = path.splice(0,1)[0];   //remove the starting point from the path.
     var moves = path.map(function(point, index) {
-        var duration = speed * dist(point, last);
+        var duration = speed * MathHelper.dist(point, last);
         last = path[index];
         return cc.MoveTo.create(duration, this.adjustedScreenCoords(point));
     }.bind(this));
     //NOTE: sequence gobbles up the move. So moves well be empty after giving it to sequence.
     character.aMoveAction = cc.sequence(moves);
     character.runAction(character.aMoveAction);
+    return true;
 };
 
 GameMap.prototype.getCoords = function(screenLoc) {
@@ -110,14 +112,14 @@ GameMap.prototype.getAStar = function(mapLocBegin, mapLocEnd) {
         
         for(var i = 0; i < neighbors.length; ++i) {
             //this may be a source of slow down... calculating sqrt often.
-            var distanceFromNeighbor = dist(currentNode, neighbors[i]);
+            var distanceFromNeighbor = MathHelper.dist(currentNode, neighbors[i]);
             var shortestDistance = currentNode.g + distanceFromNeighbor;   //1 is one more space
             var gScoreIsBest = false;
 
             //calculate distance from start
             neighbors[i].g = currentNode.g + distanceFromNeighbor;
             //calculate estimated length of path
-            neighbors[i].f = neighbors[i].g + dist(neighbors[i], mapLocEnd);
+            neighbors[i].f = neighbors[i].g + MathHelper.dist(neighbors[i], mapLocEnd);
             //set parent
             neighbors[i].parent = currentNode;
 
@@ -174,12 +176,6 @@ GameMap.prototype.isBlocked = function(mapLoc) {
 
     return false;
 };
-
-function dist(p1, p2) {
-    var dx = p1.x - p2.x;
-    var dy = p1.y - p2.y;
-    return Math.sqrt(dx * dx + dy * dy);
-}
 
 function pointsEqual(a, b) {
     return a.x == b.x && a.y == b.y;

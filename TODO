@@ -34,9 +34,39 @@ TODO Isogame
  *- be able to click on a character
 	*- capture clicking on the enemy sprite (console.log)
 
- - package things
+ *- package things
 	*- ensure mathhelper and gamemap are simple and packaged into libraries
-	- breakdown app so it’s simpler…
+	*- breakdown app so it’s simpler…
+
+ - make function dist a part of MathHelper.
+
+ - move onSelect to an extended graphic.
+	*- this extension should have a better constructor and set things up for me.
+	*- onSelect
+		*- sets global “__stopPropagation” if set
+	*- onEnter
+	*- onExit
+	*- onExit needs to be called on desctruction
+	*- test: just working… removechild
+	*- test: console log on fence.
+	*- I need to add the event to interactivesInRange, so I use it’s cb when removeChild is called. Also to make Exit simpler.
+
+	*- multiple events per tag, per enter, per exit, all different range…
+
+ *- add fading text function to top down layer, that handles everything including removal of itsself.
+	*- create it
+	*- create text for onEnter and onExit with rat and character
+	*- text should be able to follow a node…
+
+ - create a debug that gives all the touches information on screen so I can get an idea of how touches work. [if it crashes, then just disable touches for now]
+
+ - test on ipad, by plugging in my ipad and compiling and using on xcode.
+
+ - update touch code
+	- I need to make a class that handles touches
+	- all “types” of touches need to be given a priority (generic click lowest, spriteSelect next, then like touch hold touch next, etc.)
+	- highest priority activates, and all other events aren’t activated.
+	- create more gestures that interpret touches and call a callback with more sane parameters. ie. holdTouch(holdPos, touchPos)
 
  - battle
 	- create a class for character
@@ -52,11 +82,17 @@ TODO Isogame
 
  - respawn the enemy when it dies
 
- - add in the RO sprite for swordsman for attacking
-	- figure out how to use spritesheets properly [use mounted peco peco if it isn’t too challenging, just cause it’s fun]
-	- get the walking animation working
-	- play the attacking animation over the duration of windup
-	- play the hurt animation when the enemy attacks
+~~~
+
+ - find larger tileset. 64x64
+ - create thief pixelated character that is 64x128 if possible… if it seems too much, then just do 32x64 and double the size for each frame.
+ - create 3 frame animation for walking
+ - create attacking frame [just stab, ie sword out]
+ - create monster sprite (64x64) [Use imagination!]
+ - create 3 frame animationfor monster walking
+ - create attacking frame for monster
+
+~~~
 
  - Add some stats to the game that are used to calculate range(), windup(), etc.
 	~max stat would be 99.
@@ -77,3 +113,8 @@ TODO Isogame
 	- when a monster is killed the player gets exp
 	- when exp > (level * 10 + 2 ^ round(level / 5)) ++level [give 4 + (level/10) points] and reset exp
 	- every 10 points into a stat increases the cost by 1.
+
+IDEAS:
+
+ - add a monster that adds an onEnter to the player to automatically attack other monsters. Add an onExit that would remove that event.
+	- you could do some many cool tricks with this to the player!!
